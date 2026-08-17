@@ -166,43 +166,6 @@ export default function CourseList({
                 gap: theme.spacing.md,
             }}
         >
-            {countryError && (
-                <div
-                    style={{
-                        margin: "0 20px",
-                        padding: "10px 16px",
-                        backgroundColor: "#fffbeb",
-                        border: `1px solid #fef3c7`,
-                        borderRadius: theme.radius.sm,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        fontSize: "13px",
-                        color: theme.colors.warning,
-                        fontFamily: theme.typography.fontFamily,
-                    }}
-                >
-                    <span>
-                        ⚠️ Unable to detect your region. Showing prices in USD.
-                    </span>
-                    <button
-                        onClick={() => retryCountry()}
-                        style={{
-                            background: "transparent",
-                            border: "none",
-                            color: theme.colors.warning,
-                            fontWeight: 600,
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                            padding: "0 4px",
-                            fontSize: "13px",
-                        }}
-                    >
-                        Retry
-                    </button>
-                </div>
-            )}
-
             <style>{`
                 .course-list-shell {
                     width: 100%;
@@ -242,39 +205,76 @@ export default function CourseList({
                 }
             `}</style>
 
-            <div className="course-list-shell">
-                {/* Section Title */}
-                {title && (
-                    <h2
+            {countryError && (
+                <div
+                    style={{
+                        margin: `0 0 ${theme.spacing.lg}px 0`, // Removed side margins (0px left/right), added bottom spacing
+                        boxSizing: "border-box",
+                        width: "100%",
+                        padding: "12px 16px",
+                        backgroundColor: "#fffbeb",
+                        border: `1px solid #fef3c7`,
+                        borderRadius: theme.radius.sm,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        fontSize: "13px",
+                        color: theme.colors.warning,
+                        fontFamily: theme.typography.fontFamily,
+                    }}
+                >
+                    <span>
+                        ⚠️ Unable to detect your region. Showing prices in USD.
+                    </span>
+                    <button
+                        onClick={() => retryCountry()}
                         style={{
-                            fontSize: "24px",
-                            fontWeight: 700,
-                            color: theme.colors.text,
-                            margin: `0 0 ${theme.spacing.lg}px 0`,
-                            textAlign: "left",
-                            fontFamily: theme.typography.fontFamily,
+                            background: "transparent",
+                            border: "none",
+                            color: theme.colors.warning,
+                            fontWeight: 600,
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                            padding: "0 4px",
+                            fontSize: "13px",
                         }}
                     >
-                        {title}
-                    </h2>
-                )}
-
-                {/* Grid with Dynamic Gap */}
-                <div className="course-grid" style={{ gap: `${gridGap}px` }}>
-                    {courses.map((item, index) => (
-                        <CourseCard
-                            key={
-                                item?.mangoId ??
-                                item?.courseCode ??
-                                `course-${index}`
-                            }
-                            course={item}
-                            countryCode={countryCode}
-                        />
-                    ))}
+                        Retry
+                    </button>
                 </div>
+            )}
+            {/* Section Title */}
+            {title && (
+                <h2
+                    style={{
+                        fontSize: "24px",
+                        fontWeight: 700,
+                        color: theme.colors.text,
+                        margin: `0 0 ${theme.spacing.lg}px 0`,
+                        textAlign: "left",
+                        fontFamily: theme.typography.fontFamily,
+                    }}
+                >
+                    {title}
+                </h2>
+            )}
+
+            {/* Grid with Dynamic Gap */}
+            <div className="course-grid" style={{ gap: `${gridGap}px` }}>
+                {courses.map((item, index) => (
+                    <CourseCard
+                        key={
+                            item?.mangoId ??
+                            item?.courseCode ??
+                            `course-${index}`
+                        }
+                        course={item}
+                        countryCode={countryCode}
+                    />
+                ))}
             </div>
         </div>
+        </div >
     )
 }
 
