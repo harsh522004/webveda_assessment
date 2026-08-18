@@ -97,7 +97,7 @@ export function CourseCard({ course, countryCode }: CourseCardProps) {
                     )}
                 </div>
 
-                {/* Title */}
+                {/* Course title */}
                 <h3
                     className="course-card-title"
                     style={{
@@ -111,7 +111,7 @@ export function CourseCard({ course, countryCode }: CourseCardProps) {
                     {course.courseName || "Untitled Course"}
                 </h3>
 
-                {/* Description (Clamped) */}
+                {/*  long descriptions within a fixed two-line height. */}
                 <p
                     className="course-card-description"
                     style={{
@@ -129,6 +129,7 @@ export function CourseCard({ course, countryCode }: CourseCardProps) {
                 >
                     {course?.description || "No description provided."}
                 </p>
+
                 {/* Footer: Price & Refundable Badge */}
                 <div
                     style={{
@@ -138,7 +139,7 @@ export function CourseCard({ course, countryCode }: CourseCardProps) {
                         marginTop: `${theme.spacing.sm + 4}px`,
                     }}
                 >
-                    {/* Left: Dynamic Price */}
+                    {/* Price is formatted based on the detected country. */}
                     <div
                         className="course-card-price"
                         style={{
@@ -151,7 +152,6 @@ export function CourseCard({ course, countryCode }: CourseCardProps) {
                         {formattedPrice}
                     </div>
 
-                    {/* Right: Light Green Badge */}
                     {course.refundable && (
                         <div
                             style={{

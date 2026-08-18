@@ -21,6 +21,7 @@ export function useCountry(countryApiUrl: string) {
                 setCountryCode(data.country_code)
                 setCountryError(false)
             } else {
+                // Fall back to the default country when the response is incomplete.
                 setCountryCode("US")
                 setCountryError(true)
             }
@@ -34,11 +35,7 @@ export function useCountry(countryApiUrl: string) {
 
     useEffect(() => {
         fetchCountry()
-
-        return () => {
-            console.log("[useCountry] Cleanup triggered")
-        }
-    }, [fetchCountry, countryApiUrl])
+    }, [fetchCountry])
 
     return {
         countryCode,

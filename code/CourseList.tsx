@@ -6,7 +6,7 @@ import { useCountry } from "./useCountry.ts"
 import { CourseListProps } from "./course_types.ts"
 import { theme } from "./theme.ts"
 
-// API endpoints as internal constants
+// API endpoints used to load courses and detect the user's country.
 const API_URL = "https://syncsphere-hiv6.onrender.com/assignment/course-data"
 const COUNTRY_API_URL =
     "https://syncsphere-hiv6.onrender.com/assignment/country-code"
@@ -21,7 +21,7 @@ export default function CourseList({
     const { countryCode, countryError, retryCountry } =
         useCountry(COUNTRY_API_URL)
 
-    // 1. Loading State
+    // Show a loading indicator while the course data is being fetched.
     if (loading) {
         return (
             <div
@@ -61,7 +61,7 @@ export default function CourseList({
         )
     }
 
-    // 2. Error State
+    // Show the API error and allow the user to retry when possible.
     if (error) {
         return (
             <div
@@ -70,76 +70,90 @@ export default function CourseList({
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    textAlign: "center",
-                    padding: `${theme.spacing.xl * 1.5}px ${theme.spacing.lg}px`,
-                    margin: "20px auto",
-                    maxWidth: "420px",
-                    borderRadius: theme.radius.lg,
-                    backgroundColor: theme.colors.surface,
-                    border: `1px solid ${theme.colors.border}`,
-                    fontFamily: theme.typography.fontFamily,
-                    color: theme.colors.text,
+                    width: "100%",
+                    paddingTop: "60px",
+                    paddingBottom: "120px",
+                    boxSizing: "border-box",
                 }}
             >
                 <div
                     style={{
-                        width: "48px",
-                        height: "48px",
-                        borderRadius: theme.radius.pill,
-                        backgroundColor:
-                            error.status === 404
-                                ? theme.colors.background
-                                : "#fee2e2",
                         display: "flex",
+                        flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: "20px",
-                        marginBottom: theme.spacing.md,
+                        textAlign: "center",
+                        padding: `${theme.spacing.xl}px ${theme.spacing.lg}px`,
+                        maxWidth: "420px",
+                        width: "90%",
+                        borderRadius: theme.radius.lg,
+                        backgroundColor: theme.colors.surface,
+                        border: `1px solid ${theme.colors.border}`,
+                        fontFamily: theme.typography.fontFamily,
+                        color: theme.colors.text,
+                        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.04)",
                     }}
                 >
-                    {error.status === 404 ? "🔍" : "⚠️"}
-                </div>
-                <h3
-                    style={{
-                        fontSize: "18px",
-                        fontWeight: 600,
-                        margin: `0 0 ${theme.spacing.sm}px 0`,
-                    }}
-                >
-                    {error.title}
-                </h3>
-                <p
-                    style={{
-                        fontSize: theme.typography.body,
-                        lineHeight: 1.5,
-                        color: theme.colors.textSecondary,
-                        margin: `0 0 ${theme.spacing.md}px 0`,
-                    }}
-                >
-                    {error.message}
-                </p>
-                {error.status !== 404 && (
-                    <button
-                        onClick={() => refetch()}
+                    <div
                         style={{
-                            padding: "9px 20px",
-                            backgroundColor: theme.colors.primary,
-                            color: theme.colors.surface,
-                            fontSize: "13px",
-                            fontWeight: 500,
-                            borderRadius: theme.radius.sm,
-                            border: "none",
-                            cursor: "pointer",
+                            width: "48px",
+                            height: "48px",
+                            borderRadius: theme.radius.pill,
+                            backgroundColor:
+                                error.status === 404
+                                    ? theme.colors.background
+                                    : "#fee2e2",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "20px",
+                            marginBottom: theme.spacing.md,
                         }}
                     >
-                        Try Again
-                    </button>
-                )}
+                        {error.status === 404 ? "🔍" : "⚠️"}
+                    </div>
+                    <h3
+                        style={{
+                            fontSize: "18px",
+                            fontWeight: 600,
+                            margin: `0 0 ${theme.spacing.sm}px 0`,
+                        }}
+                    >
+                        {error.title}
+                    </h3>
+                    <p
+                        style={{
+                            fontSize: theme.typography.body,
+                            lineHeight: 1.5,
+                            color: theme.colors.textSecondary,
+                            margin: `0 0 ${theme.spacing.md}px 0`,
+                        }}
+                    >
+                        {error.message}
+                    </p>
+                    {error.status !== 404 && (
+                        <button
+                            onClick={() => refetch()}
+                            style={{
+                                padding: "9px 20px",
+                                backgroundColor: theme.colors.primary,
+                                color: theme.colors.surface,
+                                fontSize: "13px",
+                                fontWeight: 500,
+                                borderRadius: theme.radius.sm,
+                                border: "none",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Try Again
+                        </button>
+                    )}
+                </div>
             </div>
         )
     }
 
-    // 3. Empty State
+    // Handle cases where the API returns no courses.
     if (courses.length === 0) {
         return (
             <div
@@ -156,7 +170,6 @@ export default function CourseList({
         )
     }
 
-    // 4. Success State
     return (
         <div
             style={{
@@ -205,76 +218,77 @@ export default function CourseList({
                 }
             `}</style>
 
-            {countryError && (
-                <div
-                    style={{
-                        margin: `0 0 ${theme.spacing.lg}px 0`, // Removed side margins (0px left/right), added bottom spacing
-                        boxSizing: "border-box",
-                        width: "100%",
-                        padding: "12px 16px",
-                        backgroundColor: "#fffbeb",
-                        border: `1px solid #fef3c7`,
-                        borderRadius: theme.radius.sm,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        fontSize: "13px",
-                        color: theme.colors.warning,
-                        fontFamily: theme.typography.fontFamily,
-                    }}
-                >
-                    <span>
-                        ⚠️ Unable to detect your region. Showing prices in USD.
-                    </span>
-                    <button
-                        onClick={() => retryCountry()}
+            <div className="course-list-shell">
+                {countryError && (
+                    <div
                         style={{
-                            background: "transparent",
-                            border: "none",
-                            color: theme.colors.warning,
-                            fontWeight: 600,
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                            padding: "0 4px",
+                            margin: `0 0 ${theme.spacing.lg}px 0`,
+                            boxSizing: "border-box",
+                            width: "100%",
+                            padding: "12px 16px",
+                            backgroundColor: "#fffbeb",
+                            border: `1px solid #fef3c7`,
+                            borderRadius: theme.radius.sm,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
                             fontSize: "13px",
+                            color: theme.colors.warning,
+                            fontFamily: theme.typography.fontFamily,
                         }}
                     >
-                        Retry
-                    </button>
-                </div>
-            )}
-            {/* Section Title */}
-            {title && (
-                <h2
-                    style={{
-                        fontSize: "24px",
-                        fontWeight: 700,
-                        color: theme.colors.text,
-                        margin: `0 0 ${theme.spacing.lg}px 0`,
-                        textAlign: "left",
-                        fontFamily: theme.typography.fontFamily,
-                    }}
-                >
-                    {title}
-                </h2>
-            )}
+                        <span>
+                            ⚠️ Unable to detect your region. Showing prices in
+                            USD.
+                        </span>
+                        <button
+                            onClick={() => retryCountry()}
+                            style={{
+                                background: "transparent",
+                                border: "none",
+                                color: theme.colors.warning,
+                                fontWeight: 600,
+                                cursor: "pointer",
+                                textDecoration: "underline",
+                                padding: "0 4px",
+                                fontSize: "13px",
+                            }}
+                        >
+                            Retry
+                        </button>
+                    </div>
+                )}
 
-            {/* Grid with Dynamic Gap */}
-            <div className="course-grid" style={{ gap: `${gridGap}px` }}>
-                {courses.map((item, index) => (
-                    <CourseCard
-                        key={
-                            item?.mangoId ??
-                            item?.courseCode ??
-                            `course-${index}`
-                        }
-                        course={item}
-                        countryCode={countryCode}
-                    />
-                ))}
+                {title && (
+                    <h2
+                        style={{
+                            fontSize: "24px",
+                            fontWeight: 700,
+                            color: theme.colors.text,
+                            margin: `0 0 ${theme.spacing.lg}px 0`,
+                            textAlign: "left",
+                            fontFamily: theme.typography.fontFamily,
+                        }}
+                    >
+                        {title}
+                    </h2>
+                )}
+
+                <div className="course-grid" style={{ gap: `${gridGap}px` }}>
+                    {courses.map((item, index) => (
+                        <CourseCard
+                            key={
+                                item?.mangoId ??
+                                item?.courseCode ??
+                                `course-${index}`
+                            }
+                            course={item}
+                            countryCode={countryCode}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
-        </div >
     )
 }
 

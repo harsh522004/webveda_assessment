@@ -7,6 +7,7 @@ export function useCourses(apiUrl: string) {
     const [error, setError] = useState<FetchError | null>(null)
 
     const fetchCourses = useCallback(async () => {
+        // Skip fetching when no API URL is provided.
         if (!apiUrl || apiUrl.trim() === "") {
             setCourses([])
             setLoading(false)
@@ -20,6 +21,7 @@ export function useCourses(apiUrl: string) {
             const response = await fetch(apiUrl)
 
             if (!response.ok) {
+                // Handle common API errors with user-friendly messages.
                 if (response.status === 404) {
                     setError({
                         status: 404,
@@ -54,10 +56,9 @@ export function useCourses(apiUrl: string) {
             setCourses(data)
         } catch {
             setError({
-        title: "Unable to Load Courses",
-        message: "We couldn't load the courses. Please try again.",
-    })
-            
+                title: "Unable to Load Courses",
+                message: "We couldn't load the courses. Please try again.",
+            })
         } finally {
             setLoading(false)
         }
