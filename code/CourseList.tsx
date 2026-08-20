@@ -12,8 +12,6 @@ const COUNTRY_API_URL =
     "https://syncsphere-hiv6.onrender.com/assignment/country-code"
 
 export default function CourseList({
-    apiUrl,
-    countryApiUrl,
     title = "Explore our courses",
     gridGap = 24,
 }: CourseListProps) {
